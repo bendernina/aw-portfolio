@@ -1,0 +1,11 @@
+---
+interface Props {
+  text: string;
+  class?: string;
+}
+const { text, class: className = '' } = Astro.props;
+---
+<div class:list={['section-label', 't-mono-16', className]}>
+  <span aria-hidden="true">\</span>
+  <h2>{text}</h2>
+</div>

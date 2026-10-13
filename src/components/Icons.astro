@@ -1,0 +1,23 @@
+---
+// Minimal line icons used across the site.
+interface Props {
+  name: 'arrow-down' | 'arrow-up-right' | 'triangle';
+  class?: string;
+}
+const { name, class: className } = Astro.props;
+---
+{name === 'arrow-down' && (
+  <svg class={className} viewBox="0 0 16 16" fill="none" aria-hidden="true">
+    <path d="M8 2.5v10.5M3.5 8.5 8 13l4.5-4.5" stroke="currentColor" stroke-width="1" />
+  </svg>
+)}
+{name === 'arrow-up-right' && (
+  <svg class={className} viewBox="0 0 48 48" fill="none" aria-hidden="true">
+    <path d="M12 36 36 12M15.5 12H36v20.5" stroke="currentColor" stroke-width="2" />
+  </svg>
+)}
+{name === 'triangle' && (
+  <svg class={className} viewBox="0 0 10 10" aria-hidden="true">
+    <path d="M2.5 1.5 8.5 5l-6 3.5z" />
+  </svg>
+)}

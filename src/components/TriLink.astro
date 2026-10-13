@@ -1,0 +1,13 @@
+---
+import Icon from './Icons.astro';
+interface Props {
+  href: string;
+  label: string;
+  class?: string;
+}
+const { href, label, class: className = '' } = Astro.props;
+---
+<a href={href} class:list={['tri-link', 't-mono-14', className]}>
+  <span class="tri-link__icon"><Icon name="triangle" /></span>
+  <span>{label}</span>
+</a>

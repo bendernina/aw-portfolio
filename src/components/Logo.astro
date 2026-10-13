@@ -1,0 +1,23 @@
+---
+import Roll from './Roll.astro';
+---
+<a href="/" class="logo t-mono-16" aria-label="Andrew Williams – home">
+  <Roll text="A" down class="roll-host" />
+  <span class="logo__slash">\</span>
+  <Roll text="W" class="roll-host" />
+</a>
+
+<style>
+  .logo {
+    display: inline-flex;
+    gap: 8px;
+    color: var(--white);
+  }
+  /* The whole logo drives both letters: A rolls down, W rolls up. */
+  .logo:hover :global(.roll) > :global(span) {
+    transform: translateY(calc(-100% - var(--roll-gap, 2px)));
+  }
+  .logo:hover :global(.roll--down) > :global(span) {
+    transform: translateY(calc(100% + var(--roll-gap, 2px)));
+  }
+</style>

@@ -1,0 +1,21 @@
+---
+// Muted looping background video. Playback is started/stopped by the visibility observer in main.js.
+interface Props {
+  src: string;
+  class?: string;
+  label?: string;
+}
+const { src, class: className = '', label } = Astro.props;
+---
+<video
+  class={className}
+  src={src}
+  muted
+  loop
+  playsinline
+  autoplay
+  preload="metadata"
+  data-autoplay
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+></video>

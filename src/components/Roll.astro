@@ -1,0 +1,13 @@
+---
+// Text that swaps for a duplicate copy when its nearest `.roll-host` ancestor is hovered.
+interface Props {
+  text: string;
+  down?: boolean;
+  class?: string;
+}
+const { text, down = false, class: className = '' } = Astro.props;
+---
+<span class:list={['roll', { 'roll--down': down }, className]}>
+  <span>{text}</span>
+  <span aria-hidden="true">{text}</span>
+</span>

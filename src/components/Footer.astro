@@ -1,0 +1,118 @@
+---
+import Roll from './Roll.astro';
+import { site, footer } from '../data/site.js';
+---
+<footer class="ftr">
+  <div class="ftr__bg" aria-hidden="true">
+    <img class="ftr__img" src={footer.image} alt="" loading="lazy" decoding="async" data-parallax="footer" />
+  </div>
+
+  <div class="ftr__inner">
+    <div class="ftr__text">
+      <div class="ftr__copy t-body">
+        {footer.paragraphs.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+
+    <div class="ftr__bottom">
+      <ul class="ftr__nav">
+        {site.nav.map((item) => (
+          <li><a class="ftr__link roll-host t-mono-14" href={item.href}><Roll text={item.label} /></a></li>
+        ))}
+      </ul>
+
+      <svg class="ftr__name" viewBox="0 0 956 394" role="img" aria-label={site.name}>
+        <text x="472" y="175" text-anchor="middle">ANDREW</text>
+        <text x="472" y="371" text-anchor="middle">WILLIAMS</text>
+      </svg>
+
+      <p class="t-mono-14 c-50">{site.copyright}</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ftr {
+    position: relative;
+    height: 1800px;
+    overflow: hidden;
+    padding: 48px var(--pad);
+    isolation: isolate;
+  }
+  .ftr__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+  }
+  .ftr__img {
+    position: absolute;
+    left: 0;
+    top: -20%;
+    width: 100%;
+    height: 120%;
+    object-fit: cover;
+    object-position: 50% 50%;
+    will-change: transform;
+  }
+
+  .ftr__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+    max-width: 1064px;
+    margin: 0 auto;
+  }
+  .ftr__text {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ftr__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 224px;
+  }
+
+  .ftr__bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+  .ftr__nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 16px;
+  }
+  .ftr__link {
+    display: inline-flex;
+    padding: 4px;
+    color: var(--white);
+  }
+  .ftr__name {
+    width: 936px;
+    max-width: 100%;
+    height: auto;
+    overflow: visible;
+    fill: var(--white);
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 210.84px;
+    letter-spacing: -12px;
+  }
+
+  @media (max-width: 1279.98px) {
+    .ftr__inner { max-width: none; }
+    .ftr__name { width: 650px; }
+  }
+  @media (max-width: 719.98px) {
+    .ftr { height: 1200px; }
+    .ftr__name { width: calc(100% - 24px); }
+  }
+</style>

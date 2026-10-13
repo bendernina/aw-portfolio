@@ -1,0 +1,240 @@
+---
+import Logo from './Logo.astro';
+import Roll from './Roll.astro';
+import { site } from '../data/site.js';
+
+interface Props {
+  variant?: 'home' | 'internal';
+}
+const { variant = 'home' } = Astro.props;
+---
+<header class:list={['hdr', `hdr--${variant}`]} data-header>
+  <div class="hdr__bar grid">
+    <div class="hdr__logo"><Logo /></div>
+
+    {variant === 'home' && (
+      <nav class="hdr__menu" aria-label="Primary">
+        <ul class="hdr__list">
+          {site.nav.map((item) => (
+            <li><a class="hdr__link roll-host t-mono-14" href={item.href}><Roll text={item.label} /></a></li>
+          ))}
+        </ul>
+        <ul class="hdr__list">
+          {site.socials.map((item) => (
+            <li>
+              <a class="hdr__link roll-host t-mono-14" href={item.href} target="_blank" rel="noopener">
+                <Roll text={item.label} />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )}
+
+    {variant === 'home' && (
+      <button class="hdr__toggle t-mono-14" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+        <span aria-hidden="true">[</span>
+        <span class="hdr__toggle-words">
+          <span>Menu</span>
+          <span>Close</span>
+        </span>
+        <span aria-hidden="true">]</span>
+        <span class="sr-only">Toggle menu</span>
+      </button>
+    )}
+
+    {variant === 'internal' && (
+      <a class="hdr__back roll-host t-mono-14" href="/">
+        <span aria-hidden="true">[</span>
+        <Roll text="Back To Home" />
+        <span aria-hidden="true">]</span>
+      </a>
+    )}
+  </div>
+
+  {variant === 'home' && (
+    <div class="mmenu" id="mobile-menu" data-mobile-menu>
+      <ul class="mmenu__list">
+        {site.nav.map((item) => (
+          <li><a class="mmenu__link" href={item.href} data-menu-link>{item.label}</a></li>
+        ))}
+      </ul>
+      <ul class="mmenu__list mmenu__list--socials">
+        {site.socials.map((item) => (
+          <li><a class="mmenu__link" href={item.href} target="_blank" rel="noopener">{item.label}</a></li>
+        ))}
+      </ul>
+    </div>
+  )}
+</header>
+
+<style>
+  .hdr {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 90;
+    pointer-events: none;
+    mix-blend-mode: difference;
+  }
+  .hdr__bar {
+    position: relative;
+    z-index: 2;
+    padding-top: 28px;
+    align-items: start;
+  }
+  .hdr__bar > * {
+    pointer-events: auto;
+  }
+  .hdr__logo {
+    grid-column: 1 / span 2;
+    line-height: 0;
+  }
+
+  /* Desktop / tablet menu: two equal columns (pages, socials). */
+  .hdr__menu {
+    grid-column: 10 / span 3;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--gap);
+  }
+  .hdr__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+  .hdr__link {
+    display: inline-flex;
+    padding: 4px;
+    color: var(--white);
+  }
+  @media (max-width: 1439.98px) {
+    .hdr__menu { grid-column: 7 / span 4; }
+  }
+  @media (max-width: 1279.98px) {
+    .hdr__menu { grid-column: 7 / span 6; }
+  }
+
+  /* Mobile toggle */
+  .hdr__toggle {
+    display: none;
+    grid-column: 7 / -1;
+    justify-self: end;
+    align-items: flex-start;
+    margin-top: 1px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    color: var(--white);
+  }
+  .hdr__toggle-words {
+    position: relative;
+    display: block;
+    height: 1.28em;
+    width: calc(4ch - 0.24em);
+    overflow: hidden;
+    transition: width var(--hover);
+  }
+  .hdr__toggle-words > span {
+    display: block;
+    transition: transform var(--hover);
+  }
+  .hdr__toggle-words > span + span {
+    position: absolute;
+    left: 0;
+    top: calc(100% + 2px);
+  }
+  .hdr--open .hdr__toggle-words {
+    width: calc(5ch - 0.3em);
+  }
+  .hdr--open .hdr__toggle-words > span {
+    transform: translateY(calc(-100% - 2px));
+  }
+
+  /* Internal header */
+  .hdr__back {
+    grid-column: 7 / -1;
+    justify-self: end;
+    display: inline-flex;
+    margin-top: 1px;
+    color: var(--white);
+  }
+
+  @media (max-width: 719.98px) {
+    .hdr--home {
+      mix-blend-mode: normal;
+    }
+    .hdr__menu { display: none; }
+    .hdr__toggle { display: inline-flex; }
+  }
+
+  /* Mobile overlay menu */
+  .mmenu {
+    display: none;
+  }
+  @media (max-width: 719.98px) {
+    .mmenu {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 96px var(--pad) 32px;
+      background: var(--black);
+      clip-path: inset(0 0 100% 0);
+      visibility: hidden;
+      pointer-events: none;
+      transition:
+        clip-path 0.6s var(--ease),
+        visibility 0s linear 0.6s;
+    }
+    .hdr--open .mmenu {
+      clip-path: inset(0 0 0 0);
+      visibility: visible;
+      pointer-events: auto;
+      transition: clip-path 0.6s var(--ease);
+    }
+  }
+  .mmenu__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 7px;
+  }
+  .mmenu__link {
+    display: inline-block;
+    padding: 4px 0;
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 1.28;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: var(--white);
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.3s var(--ease),
+      transform 0.3s var(--ease);
+  }
+  .mmenu__list--socials .mmenu__link {
+    color: var(--white-50);
+  }
+  .hdr--open .mmenu__link {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.6s var(--ease) calc(0.15s + var(--i, 0) * 0.05s),
+      transform 0.6s var(--ease) calc(0.15s + var(--i, 0) * 0.05s);
+  }
+  .mmenu__list li:nth-child(2) .mmenu__link { --i: 1; }
+  .mmenu__list li:nth-child(3) .mmenu__link { --i: 2; }
+</style>

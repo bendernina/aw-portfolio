@@ -1,0 +1,35 @@
+<div class="grain" aria-hidden="true"><div class="grain__tex"></div></div>
+
+<style>
+  .grain {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .grain__tex {
+    position: absolute;
+    inset: -200%;
+    width: 400%;
+    height: 400%;
+    background: url('/images/grain.png') repeat;
+    background-size: 256px 256px;
+    opacity: 0.06;
+    animation: grain 1s steps(8) infinite;
+  }
+  @keyframes grain {
+    0% { transform: translate(0, 0); }
+    12% { transform: translate(-5%, -10%); }
+    25% { transform: translate(-15%, 5%); }
+    37% { transform: translate(7%, -25%); }
+    50% { transform: translate(-5%, 25%); }
+    62% { transform: translate(-15%, 10%); }
+    75% { transform: translate(15%, 0%); }
+    87% { transform: translate(0%, 15%); }
+    100% { transform: translate(-10%, 10%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .grain__tex { animation: none; }
+  }
+</style>

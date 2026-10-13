@@ -1,0 +1,153 @@
+---
+import Base from '../layouts/Base.astro';
+import Video from '../components/Video.astro';
+import Contact from '../components/Contact.astro';
+import { projects, site } from '../data/site.js';
+
+export function getStaticPaths() {
+  return projects.map((project) => ({ params: { slug: project.slug }, props: { project } }));
+}
+
+const { project } = Astro.props;
+const meta = [
+  { label: 'Year', value: project.year },
+  { label: 'Category', value: project.category },
+  { label: 'Client', value: project.client },
+];
+---
+<Base title={`${site.shortName} – ${project.name}`} description={project.summary} header="internal">
+  <section class="phero" aria-label={project.name}>
+    <div class="media phero__media" aria-hidden="true"><Video src={project.cover} /></div>
+    <div class="phero__inner">
+      <h1 class="phero__title">{project.name}</h1>
+      <dl class="phero__meta">
+        {meta.map((m) => (
+          <div>
+            <dt class="t-mono-14">{m.label}</dt>
+            <dd class="t-mono-16 c-50">{m.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="overview appear" data-appear style="--appear-y: 64px">
+    <div class="overview__inner">
+      <h2 class="t-mono-14">Overview</h2>
+      <div class="overview__body t-body c-50">
+        {project.overview.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="pvideos" aria-label="Project footage">
+    {project.videos.map((src) => (
+      <div class="media pvideos__item"><Video src={src} /></div>
+    ))}
+  </section>
+
+  <Contact spacious />
+</Base>
+
+<style>
+  .phero {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    height: 720px;
+    overflow: hidden;
+    background: var(--white-08);
+  }
+  .phero__media {
+    position: absolute;
+    inset: 0;
+    background: transparent;
+  }
+  .phero__inner {
+    position: relative;
+    width: 100%;
+    padding: 0 var(--pad) 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    text-align: center;
+    mix-blend-mode: difference;
+  }
+  .phero__title {
+    max-width: 560px;
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 80px;
+    line-height: 0.96;
+    letter-spacing: -0.06em;
+    text-transform: uppercase;
+    animation: rise 1s var(--ease-quart) 0.1s both;
+  }
+  .phero__meta {
+    display: grid;
+    grid-template-columns: repeat(3, 141px);
+    column-gap: var(--gap);
+    margin: 0;
+    animation: rise-fade 1s var(--ease-quart) 0.4s both;
+  }
+  .phero__meta dd {
+    margin: 6px 0 0;
+  }
+  @keyframes rise {
+    from { transform: translateY(64px); opacity: 0; }
+    to { transform: none; opacity: 1; }
+  }
+  @keyframes rise-fade {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: none; opacity: 1; }
+  }
+
+  .overview {
+    padding: 160px var(--pad);
+  }
+  .overview__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+  .overview__body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .pvideos {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+  }
+  .pvideos__item {
+    height: 900px;
+  }
+
+  @media (max-width: 1279.98px) {
+    .phero { height: 800px; }
+    .phero__title {
+      max-width: 520px;
+      font-size: 72px;
+    }
+    .pvideos__item { height: 880px; }
+  }
+  @media (max-width: 719.98px) {
+    .phero { height: max(100vh, 720px); }
+    .phero__inner {
+      align-items: stretch;
+      gap: 41px;
+      text-align: left;
+    }
+    .phero__title {
+      max-width: none;
+      font-size: 48px;
+    }
+    .phero__meta { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .pvideos__item { height: 600px; }
+  }
+</style>
